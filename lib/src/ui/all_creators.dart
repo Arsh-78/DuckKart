@@ -3,6 +3,7 @@ import 'package:untitled/src/blocs/creators_bloc.dart';
 import 'package:untitled/src/ui/creator_Donation.dart';
 
 import '../models/creator_model.dart';
+import '../resources/navDrawer.dart';
 
 
 class AllCreators extends StatelessWidget {
@@ -11,6 +12,7 @@ class AllCreators extends StatelessWidget {
   Widget build(BuildContext context) {
     bloc.fetchAllCreators();
     return Scaffold(
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: Text('All Creators'),
         backgroundColor: Color(0XFF5D3FD3),

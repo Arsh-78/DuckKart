@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:untitled/src/blocs/donation_Bloc.dart';
 import 'package:untitled/src/models/creator_model.dart';
+import 'package:untitled/src/models/user_donation_model.dart';
 
 
 class CreatorDonation extends StatefulWidget {
@@ -18,7 +20,9 @@ class CreatorDonation extends StatefulWidget {
 
 class _CreatorDonationState extends State<CreatorDonation> {
   String donation = '';
+  String name = '';
   String currencyValue = '\$';
+  String message = '';
   var items = ['\$','₹'];
 
   @override
@@ -100,9 +104,9 @@ class _CreatorDonationState extends State<CreatorDonation> {
                           child: TextField(
                               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                             style: TextStyle(color: Colors.black),
-          onChanged:(String text){
+          onChanged:(String? newValue){
                               setState((){
-                                donation =text;
+                                donation =newValue!;
                               });
           },
                             keyboardType: TextInputType.number,
@@ -116,10 +120,15 @@ class _CreatorDonationState extends State<CreatorDonation> {
                   ),
               SizedBox(height: 30.0,),
 
-              TextField(decoration: InputDecoration(border: OutlineInputBorder(),hintText: 'Your Name (Optional)' ),),
+              TextField(decoration: InputDecoration(border: OutlineInputBorder(),hintText: 'Your Name (Optional)' ),
+              onChanged: (String? newValue){
+                setState((){
+                  name =newValue!;
+                });
+              },),
 
               SizedBox(height: 30.0,),
-              const SizedBox(
+              SizedBox(
                 height: 200.0,
                 child: TextField(decoration: InputDecoration(border: OutlineInputBorder(),
                     hintText: 'Say Something (optional'),
@@ -127,6 +136,12 @@ class _CreatorDonationState extends State<CreatorDonation> {
                   minLines: null,
                   expands: true,
                   textAlignVertical: TextAlignVertical.top,
+                  onChanged: (String? newValue){
+                    setState((){
+                      message =newValue!;
+                    });
+                  } ,
+
                 ),
               ),
 
@@ -134,7 +149,13 @@ class _CreatorDonationState extends State<CreatorDonation> {
                 height: 50.0,
               ),
 
-              ElevatedButton(onPressed: (){}, child: Text('Support ${currencyValue}${donation}'))
+              ElevatedButton(onPressed: (){
+                userDonationBloc.userDonationProvider.addDonation(UserDonation(creatorId: widget.currentCreator.id, amount: donation, currrencyValue: currencyValue,name: name,message: message));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Thank You for your donation FAM!!"),
+                  duration: Duration(milliseconds: 600),
+                ));
+              }, child: Text('Support ${currencyValue}${donation}'))
             ],
           ),
         ),
