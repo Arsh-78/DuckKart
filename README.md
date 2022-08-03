@@ -23,3 +23,4 @@ samples, guidance on mobile development, and a full API reference.
 - Used Bloc for Statemanagement and in donations screens use setState
 - Completed All three tasks
 - NO definate layout for task 3 was asked so made a simple table
+- Used bloc for fetching the data in final screen also
